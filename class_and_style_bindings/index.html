@@ -1,0 +1,44 @@
+<html>
+	<head>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	</head>
+
+	<body>
+    <div
+      id="example1"
+      class="static"
+      v-bind:class="{ active: isActive, 'text-danger': hasError }"
+    >example1</div>
+
+    <div id="example2" v-bind:class="[isActive ? activeClass : '', errorClass]">example2</div>
+
+    <div id="example3" v-bind:style="{ color: activeColor, fontSize: fontSize + 'px' }">example3</div>
+
+		<script>
+      var vm = new Vue({
+        el: "#example1",
+        data: {
+          isActive: false,
+          hasError: true
+        }
+      })
+
+      var vm2 = new Vue({
+        el: "#example2",
+        data: {
+          isActive: false,
+          activeClass: 'active',
+          errorClass: 'text-danger'
+        }
+      })
+
+      var vm3 = new Vue({
+        el: "#example3",
+        data: {
+          activeColor: 'red',
+          fontSize: 30
+        }
+      })
+		</script>
+	</body>
+</html>
