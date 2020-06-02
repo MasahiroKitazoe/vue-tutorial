@@ -1,9 +1,9 @@
 <html>
-	<head>
+  <head>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-	</head>
+  </head>
 
-	<body>
+  <body>
     <div
       id="example1"
       class="static"
@@ -14,7 +14,7 @@
 
     <div id="example3" v-bind:style="{ color: activeColor, fontSize: fontSize + 'px' }">example3</div>
 
-		<script>
+    <script>
       var vm = new Vue({
         el: "#example1",
         data: {
@@ -39,6 +39,6 @@
           fontSize: 30
         }
       })
-		</script>
-	</body>
+    </script>
+  </body>
 </html>
