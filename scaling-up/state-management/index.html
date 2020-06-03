@@ -1,0 +1,41 @@
+<html>
+  <head>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  </head>
+
+  <body>
+    <div id="app"></div>
+    <script>
+      var sourceOfTruth = {}
+
+      var store = {
+        debug: true,
+        state: {
+          message: 'Hello!'
+        },
+        setMessageAction(newValue) {
+          if (this.debug) console.log('setMessageAction triggered with', newValue)
+          this.state.message = newValue
+        },
+        clearMessageAction() {
+          if (this.debug) console.log('clearMessageAction triggered')
+          this.state.message = ''
+        }
+      }
+
+      var vmA = new Vue({
+        data: {
+          privateState: {},
+          sharedState: sourceOfTruth
+        }
+      })
+
+      var vmB = new Vue({
+        data: {
+          privateState: {},
+          sharedState: sourceOfTruth
+        }
+      })
+    </script>
+  </body>
+</html>
