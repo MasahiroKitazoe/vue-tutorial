@@ -1,0 +1,166 @@
+<html>
+  <head>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  </head>
+
+  <body>
+    <div id="main">
+      <blog-post v-bind="blogProps"></blog-post>
+
+      <base-checkbox v-model="lovingVue"></base-checkbox>
+
+      <br>
+
+      <base-input label="base input label" value="value" v-on:input="onFocus"></base-input>
+
+      <br>
+
+      <navigation-link url="#">
+        Your Profile
+      </navigation-link>
+      <navigation-link url="#"></navigation-link>
+
+      <br>
+
+      <base-layout>
+        <template v-slot:header>
+          <h1>Here might be a page title</h1>
+        </template>
+
+        <p>A paragraph for the main content.</p>
+        <p>And another one.</p>
+
+        <template v-slot:footer>
+          <p>Here's some contact info</p>
+        </template>
+      </base-layout>
+    </div>
+
+    <script>
+      let BlogPostComponent = {
+        props: {
+          title: {
+            type: String,
+            required: true
+          },
+          likes: {
+            type: Number,
+            default: 0
+          },
+          is_published: {
+            type: Boolean,
+            required: true
+          }
+        },
+        template: `
+          <div>
+            <h3>{{title}}</h3>
+            <div>
+              <span>{{likes}}いいね</span> <span>{{is_published ? '発売中' : '未発売'}}</span>
+            </div>
+          </div>
+        `
+      }
+
+      let CheckBoxComponent = {
+        model: {
+          prop: 'checked',
+          event: 'change'
+        },
+        props: {
+          checked: Boolean
+        },
+        template: `
+        <input
+          type="checkbox"
+          v-bind:checked="checked"
+          v-on:change="$emit('change', $event.target.checked)"
+        >
+        `
+      }
+
+      let BaseInput = {
+        inheritAttrs: false,
+        props: ['label', 'value'],
+        computed: {
+          inputListeners: function(){
+            var vm = this
+            return Object.assign({},
+              this.$listeners,
+              {
+                input: function(event){
+                  vm.$emit('input', event.target.value)
+                },
+                focus: function(event) {
+                  vm.$emit('input', event)
+                }
+              }
+            )
+          }
+        },
+        template: `
+        <label>
+          {{ label }}
+          <input
+            v-bind="$attrs"
+            v-bind:value="value"
+            v-on="inputListeners"
+          >
+        </label>
+        `
+      }
+
+      let NavbarLinkComponent = {
+        props: ['url'],
+        template: `
+          <a
+            v-bind:href="url"
+            class="nav-link"
+          >
+            <slot>this is fallback content</slot>
+          </a>
+        `
+      }
+
+      let BaseLayoutComponent = {
+        template: `
+        <div class="container">
+          <header>
+            <slot name="header"></slot>
+          </header>
+          <main>
+            <slot></slot>
+          </main>
+          <footer>
+            <slot name="footer"></slot>
+          </footer>
+        </div>
+        `
+      }
+
+      new Vue({
+        el: "#main",
+        components: {
+          'blog-post': BlogPostComponent,
+          'base-checkbox': CheckBoxComponent,
+          'base-input': BaseInput,
+          'navigation-link': NavbarLinkComponent,
+          'base-layout': BaseLayoutComponent,
+        },
+        data: {
+          'lovingVue': true,
+          'blogProps': {
+            title: "this is title",
+            likes: 100,
+            is_published: true
+          }
+        },
+        methods: {
+          'onFocus': function() {
+            console.log('native on focus event triggered');
+          }
+        }
+      })
+    </script>
+  </body>
+</html>
